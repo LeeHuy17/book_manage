@@ -20,3 +20,5 @@ def book_list(request):
     
     else:
         return HttpResponseNotAllowed(['GET'])
+    
+
