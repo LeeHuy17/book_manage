@@ -77,8 +77,15 @@ WSGI_APPLICATION = 'book_manage.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'book_manage_db',        # Tên Database trên MySQL
+        'USER': 'root',                  # Tài khoản MySQL (mặc định là 'root')
+        'PASSWORD': 'lehuy173',     # mật khẩu MySQL 
+        'HOST': 'localhost',             # chạy MySQL ngay trên máy cục bộ
+        'PORT': '3306',                  # Cổng kết nối mặc định của MySQL
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'", # Giúp quản lý dữ liệu chặt chẽ hơn
+        },
     }
 }
 
@@ -126,6 +133,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',             # Đọc JSON
