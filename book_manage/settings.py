@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'app',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -142,5 +143,5 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.FormParser',             # Đọc Form (Tab Form-encode)
         'rest_framework.parsers.MultiPartParser',        # Đọc Form-data (Khi có up ảnh/file)
     ],
-    'DEFAULT_PAGINATION_CLASS': 'app.paginations.CustomPagination', 
+    'DEFAULT_PAGINATION_CLASS': 'app.paginations.CustomPagination',  
 } 

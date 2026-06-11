@@ -10,3 +10,11 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+class Post(models.Model):
+    title = models.CharField(max_length=200, verbose_name="Tên bài viết")
+    author = models.CharField(max_length=100, verbose_name="Tác giả")
+    content = models.TextField(verbose_name="Nội dung bài viết")
+
+    def __str__(self):
+        return self.title
