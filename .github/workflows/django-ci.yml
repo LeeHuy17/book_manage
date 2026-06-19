@@ -1,6 +1,5 @@
 name: Django CI
 
-# Cấu hình kích hoạt workflow khi có hành động push hoặc pull request vào nhánh main
 on:
   push:
     branches: [ "main" ]
@@ -12,27 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Bước 1: Tải mã nguồn từ GitHub xuống máy ảo CI
+    # Bước 1: Tải mã nguồn từ GitHub xuống máy ảo
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # Bước 2: Thiết lập môi trường Python (Sử dụng phiên bản 3.10 hoặc bản bạn đang dùng)
+    # Bước 2: Thiết lập môi trường Python 3.10
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    # Bước 3: Cài đặt các thư viện phụ thuộc (Dependencies)
+    # Bước 3: Cài đặt thư viện
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
+        cd book_manage
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        # Nếu file requirements.txt nằm trong thư mục con book_manage, dùng lệnh dưới:
-        # if [ -f book_manage/requirements.txt ]; then pip install -r book_manage/requirements.txt; fi
 
-    # Bước 4: Chạy kiểm tra hệ thống (Chạy lệnh test của Django)
+    # Bước 4: Chạy test hệ thống 
     - name: Run Tests
       run: |
+        cd book_manage
         python manage.py test
-        # Nếu file manage.py nằm trong thư mục con book_manage, dùng lệnh dưới:
-        # cd book_manage && python manage.py test
