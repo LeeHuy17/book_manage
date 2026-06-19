@@ -28,7 +28,13 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    # Bước 4: Chạy kiểm tra hệ thống (Chạy ở thư mục book_manage)
+    # Bước 4: Chạy migration (Tạo database schema)
+    - name: Run Migrations
+      working-directory: book_manage
+      run: |
+        python manage.py migrate
+
+    # Bước 5: Chạy kiểm tra hệ thống (Chạy ở thư mục book_manage)
     - name: Run Tests
       working-directory: book_manage
       run: |
