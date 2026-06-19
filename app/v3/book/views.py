@@ -4,7 +4,11 @@ from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import permissions
 from app.paginations import CustomPagination
-
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+from app.paginations import CustomPagination
 
 
 class BookList(mixins.ListModelMixin,
@@ -50,3 +54,20 @@ class BookDetail(mixins.RetrieveModelMixin,
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+class LogoutView(APIView):
+    # Bắt buộc phải xác thực token khi gọi API này
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        try:
+            # Lấy refresh token từ body request do FE gửi lên
+            refresh_token = request.data.get("refresh")
+            if not refresh_token:
+                return Response({"error": "Thiếu dữ liệu refresh token!"}, status=status.HTTP_400_BAD_REQUEST)
+                
+            token = RefreshToken(refresh_token)
+            token.blacklist()  # Đưa token vào danh sách đen
+            return Response({"detail": "Đăng xuất thành công!"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
