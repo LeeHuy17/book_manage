@@ -11,9 +11,13 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Detect CI environment
+IS_CI_ENVIRONMENT = os.getenv('CI', 'false').lower() == 'true'
 
 
 # Quick-start development settings - unsuitable for production
@@ -82,19 +86,28 @@ WSGI_APPLICATION = 'book_manage.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'book_manage_db',        # Tên Database trên MySQL
-        'USER': 'root',                  # Tài khoản MySQL (mặc định là 'root')
-        'PASSWORD': 'lehuy173',     # mật khẩu MySQL 
-        'HOST': 'localhost',             # chạy MySQL ngay trên máy cục bộ
-        'PORT': '3306',                  # Cổng kết nối mặc định của MySQL
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'", # Giúp quản lý dữ liệu chặt chẽ hơn
-        },
+# Use SQLite for CI environment, MySQL for production
+if IS_CI_ENVIRONMENT:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',  # Sử dụng SQLite trong CI
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'book_manage_db',        # Tên Database trên MySQL
+            'USER': 'root',                  # Tài khoản MySQL (mặc định là 'root')
+            'PASSWORD': 'lehuy173',     # mật khẩu MySQL 
+            'HOST': 'localhost',             # chạy MySQL ngay trên máy cục bộ
+            'PORT': '3306',                  # Cổng kết nối mặc định của MySQL
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'", # Giúp quản lý dữ liệu chặt chẽ hơn
+            },
+        }
+    }
 
 
 # Password validation
