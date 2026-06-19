@@ -15,11 +15,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # Bước 2: Thiết lập môi trường Python 3.10
+    # Bước 2: Thiết lập môi trường Python 3.12
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: '3.12'
 
     # Bước 3: Cài đặt thư viện
     - name: Install Dependencies
